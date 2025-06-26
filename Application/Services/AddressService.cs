@@ -50,7 +50,9 @@ public class AddressService : IAddressService
         if (existing == null)
             throw new KeyNotFoundException("Address not found.");
 
-        await _addressRepository.UpdateAsync(address);
+        existing.Street = address.Street;
+
+        await _addressRepository.UpdateAsync(existing);
         return address;
     }
 

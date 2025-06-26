@@ -1,6 +1,8 @@
 ﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
+using Application.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace API.Controllers;
 
@@ -16,14 +18,14 @@ public class ClientsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Client>>> GetAll()
+    public async Task<ActionResult<IEnumerable<DetailClientDto>>> GetAll()
     {
         var clients = await _clientService.GetAllAsync();
         return Ok(clients);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Client>> GetById(Guid id)
+    public async Task<ActionResult<DetailClientDto>> GetById(Guid id)
     {
         var client = await _clientService.GetByIdAsync(id);
         if (client == null)
@@ -33,12 +35,28 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Client>> Create(Client client)
+    public async Task<ActionResult<DetailClientDto>> Create([FromBody] UpdateClientDto request)
     {
         try
         {
+            var client = new Client
+            {
+                Name = request.Name,
+                Email = request.Email,
+                Logo = request.Logo
+            };
+
             var created = await _clientService.CreateAsync(client);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+
+            var result = new DetailClientDto
+            {
+                Id = created.Id,
+                Name = created.Name,
+                Email = created.Email,
+                Logo = created.Logo
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         catch (InvalidOperationException ex)
         {
@@ -47,15 +65,32 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<Client>> Update(Guid id, Client client)
+    public async Task<ActionResult<DetailClientDto>> Update(Guid id, [FromBody] UpdateClientDto request)
     {
+        var client = new Client
+        {
+            Id = id,
+            Name = request.Name,
+            Email = request.Email,
+            Logo = request.Logo
+        };
+
         if (id != client.Id)
             return BadRequest("ID mismatch");
 
         try
         {
             var updated = await _clientService.UpdateAsync(client);
-            return Ok(updated);
+
+            var result = new DetailClientDto
+            {
+                Id = updated.Id,
+                Name = updated.Name,
+                Email = updated.Email,
+                Logo = updated.Logo
+            };
+
+            return Ok(result);
         }
         catch (KeyNotFoundException)
         {

@@ -41,8 +41,12 @@ public class ClientService : IClientService
         if (emailInUse)
             throw new InvalidOperationException("Email is already in use by another client.");
 
-        await _clientRepository.UpdateAsync(client);
-        return client;
+        existing.Name = client.Name;
+        existing.Email = client.Email;
+        existing.Logo = client.Logo;
+
+        await _clientRepository.UpdateAsync(existing);
+        return existing;
     }
 
     public async Task DeleteAsync(Guid id)

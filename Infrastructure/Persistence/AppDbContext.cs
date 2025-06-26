@@ -14,6 +14,14 @@ public class AppDbContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Client>().ToTable("Client");
+        modelBuilder.Entity<Address>().ToTable("Address");
+    }
+
     public DbSet<Client> Clients { get; set; }
     public DbSet<Address> Addresses { get; set; }
 }

@@ -4,6 +4,7 @@ using Application.DTOs;
 using System.Reflection;
 using Web.Models;
 using System.Net.NetworkInformation;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Web.Controllers;
 
@@ -16,8 +17,17 @@ public class ClientsController : Controller
         _integration = integration;
     }
 
+    public async Task<IActionResult> Login()
+    {
+        await _integration.Login(new AuthDto());
+        return RedirectToAction("Index", "Clients");
+    }
+
     public async Task<IActionResult> Index()
     {
+        if (string.IsNullOrEmpty(TokenProvider.Token))
+            return RedirectToAction(nameof(Login));
+
         var clients = await _integration.GetAllClientsAsync();
         return View(clients);
     }

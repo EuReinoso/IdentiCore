@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Application.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -17,6 +18,7 @@ public class ClientsController : ControllerBase
         _clientService = clientService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DetailClientDto>>> GetAll()
     {

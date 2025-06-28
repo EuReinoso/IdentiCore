@@ -11,6 +11,23 @@ public class IdentiCoreIntegration
         _http = http;
     }
 
+    public async Task Login(AuthDto dto)
+    {
+        var response = await _http.PostAsJsonAsync("Auth/Login", dto);
+
+        if (!response.IsSuccessStatusCode)
+            throw new ApplicationException("Login failed");
+
+        var result = await response.Content.ReadFromJsonAsync<LoginResponseDto>();
+
+        var token = result?.Token;
+
+        if (string.IsNullOrEmpty(token))
+            throw new ApplicationException("Empty Token");
+
+        TokenProvider.Token = token;
+    }
+
     public async Task<IEnumerable<DetailClientDto>> GetAllClientsAsync()
     {
         var response = await _http.GetAsync("Clients");

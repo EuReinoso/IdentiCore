@@ -57,4 +57,9 @@ public class ClientService : IClientService
 
         await _clientRepository.DeleteAsync(client);
     }
+
+    public Task<Client?> GetByEmailAsync(string email)
+    {
+        return _clientRepository.GetByEmailAsync(email);
+    }
 }

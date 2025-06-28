@@ -21,9 +21,7 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client?> GetByEmailAsync(string email)
     {
-        return await _context.Clients
-            .Include(c => c.Addresses)
-            .FirstOrDefaultAsync(c => c.Email == email);
+        return await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
     }
 
     public async Task<IEnumerable<Client>> GetAllAsync()

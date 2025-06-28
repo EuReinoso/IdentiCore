@@ -18,6 +18,8 @@ public class ClientViewModel
 
     public IFormFile? LogoFile { get; set; }
 
+    public IEnumerable<AddressViewModel> Addresses { get; set; } = new List<AddressViewModel>();
+
     public async Task<UpdateClientDto> ToUpdateClientDtoAsync()
     {
         byte[]? finalLogo = Logo;

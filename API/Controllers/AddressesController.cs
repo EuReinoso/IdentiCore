@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -38,7 +39,14 @@ public class AddressesController : ControllerBase
         if (address == null)
             return NotFound();
 
-        return Ok(address);
+        var result = new DetailAddressDto()
+        {
+            Id = address.Id,
+            ClientId = address.ClientId,
+            Street = address.Street
+        };
+
+        return Ok(result);
     }
 
     [HttpPost]

@@ -19,7 +19,4 @@ public class DetailAddressDto
 
     [Required]
     public Guid ClientId { get; set; }
-
-    [NotMapped]
-    public DetailClientDto Client { get; set; } = null!;
 }

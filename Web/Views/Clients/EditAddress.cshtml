@@ -1,0 +1,40 @@
+﻿@model Web.Models.AddressViewModel
+
+@{
+    var isEdit = Model.Id.HasValue && Model.Id != Guid.Empty;
+    var action = isEdit ? "EditAddress" : "CreateAddress";
+    ViewData["Title"] = isEdit ? "Edit Address" : "Create Address";
+}
+
+<section class="container py-5">
+    <div class="card shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h2 class="fw-bold mb-4">@ViewData["Title"]</h2>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>@error.ErrorMessage</div>
+                    }
+                </div>
+            }
+
+            <form asp-action="@action" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ClientId"/>
+
+                <div class="mb-3">
+                    <label asp-for="Street" class="form-label"></label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-save me-1"></i> Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</section>

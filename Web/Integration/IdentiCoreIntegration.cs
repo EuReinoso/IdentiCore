@@ -44,13 +44,57 @@ public class IdentiCoreIntegration
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-            throw new ApplicationException(error?["error"] ?? "Failed to create client");
+            throw new ApplicationException(error?["error"] ?? "Failed to update client");
         }
     }
 
     public async Task DeleteClientAsync(Guid id)
     {
         var response = await _http.DeleteAsync($"Clients/{id}");
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<DetailAddressDto?> GetAddressByIdAsync(Guid id)
+    {
+        var response = await _http.GetAsync($"Addresses/{id}");
+        return response.IsSuccessStatusCode
+            ? await response.Content.ReadFromJsonAsync<DetailAddressDto>()
+            : null;
+    }
+
+    public async Task<IEnumerable<DetailAddressDto>?> GetAddressByClientIdAsync(Guid id)
+    {
+        var response = await _http.GetAsync($"Addresses/client/{id}");
+        return response.IsSuccessStatusCode
+            ? await response.Content.ReadFromJsonAsync<IEnumerable<DetailAddressDto>?>()
+            : null;
+    }
+
+    public async Task CreateAddressAsync(CreateAddressDto dto)
+    {
+        var response = await _http.PostAsJsonAsync("Addresses", dto);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
+            throw new ApplicationException(error?["error"].ToString() ?? "Failed to create address");
+        }
+    }
+
+    public async Task UpdateAddressAsync(Guid id, UpdateAddressDto dto)
+    {
+        var response = await _http.PutAsJsonAsync($"Addresses/{id}", dto);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var error = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
+            throw new ApplicationException(error?["error"].ToString() ?? "Failed to update address");
+        }
+    }
+
+    public async Task DeleteAddressAsync(Guid id)
+    {
+        var response = await _http.DeleteAsync($"Addresses/{id}");
         response.EnsureSuccessStatusCode();
     }
 }

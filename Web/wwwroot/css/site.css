@@ -20,3 +20,43 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.clients-section h2 {
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+}
+
+.card {
+    border: none;
+    background-color: #fff;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+.btn-primary {
+    background-color: #4F46E5;
+    border-color: #4F46E5;
+}
+
+.btn-outline-warning {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #f59e0b;
+        color: #fff;
+    }
+
+.btn-outline-danger {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ef4444;
+    color: #fff;
+}

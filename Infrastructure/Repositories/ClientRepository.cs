@@ -16,9 +16,7 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client?> GetByIdAsync(Guid id)
     {
-        return await _context.Clients
-            .Include(c => c.Addresses)
-            .FirstOrDefaultAsync(c => c.Id == id);
+        return await _context.Clients.FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Client?> GetByEmailAsync(string email)
@@ -31,7 +29,7 @@ public class ClientRepository : IClientRepository
     public async Task<IEnumerable<Client>> GetAllAsync()
     {
         return await _context.Clients
-            .Include(c => c.Addresses)
+            .AsNoTracking()
             .ToListAsync();
     }
 

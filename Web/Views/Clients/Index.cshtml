@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Clients";
+}
+
+<h2>Clients</h2>
+<a asp-action="Edit" class="btn btn-primary">Create New</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.Name</td>
+                <td>@client.Email</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@client.Id" class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+                    <form asp-action="Delete" asp-route-id="@client.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

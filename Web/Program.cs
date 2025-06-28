@@ -1,7 +1,15 @@
+using Application.Services;
+using Web.Integration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IdentiCoreIntegration>();
+builder.Services.AddHttpClient<IdentiCoreIntegration>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7272/api/");
+});
 
 var app = builder.Build();
 
@@ -22,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Clients}/{action=Index}/{id?}");
 
 app.Run();
